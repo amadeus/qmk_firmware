@@ -21,7 +21,8 @@ enum planck_layers {
   _BASE,
   _LOWER,
   _RAISE,
-  _ADJUST
+  _ADJUST,
+  _MOUSE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -48,9 +49,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT_planck_1x2uC(
     KC_F12,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,  KC_F7,    KC_F8,     KC_F9,    KC_F10,   KC_F11,
-    KC_RCTL,  KC_NO,    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_NO,  KC_CAPS,  RGB_MOD,   RGB_HUI,  RGB_SPI,  KC_F12,
+    KC_RCTL,  TO(4),    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_NO,  KC_CAPS,  RGB_MOD,   RGB_HUI,  RGB_SPI,  KC_F12,
     KC_LSFT,  KC_NO,    KC_NO,    KC_BRID,  KC_VOLD,  KC_MUTE,  KC_NO,  KC_PSCR,  RGB_RMOD,  RGB_SAD,  RGB_SPD,  KC_RSFT,
-    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,           KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  KC_ENT
+    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,           KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  RESET
+  ),
+
+  [_MOUSE] = LAYOUT_planck_1x2uC(
+    KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  KC_NO,
+    KC_NO,  TO(0),  KC_WH_L,  KC_WH_U,  KC_WH_D,  KC_WH_R,  KC_MS_L,  KC_MS_D,  KC_MS_U,  KC_MS_R,  KC_NO,  KC_NO,
+    KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_BTN1,  KC_BTN2,  KC_NO,    KC_NO,  KC_NO,
+    KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,  KC_NO
   )
 };
 
@@ -58,10 +66,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 float plover_song[][2]     = SONG(PLOVER_SOUND);
 float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
 #endif
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
 
 bool muse_mode = false;
 uint8_t last_muse_note = 0;
@@ -157,14 +161,4 @@ void matrix_scan_user(void) {
     }
   }
 #endif
-}
-
-bool music_mask_user(uint16_t keycode) {
-  switch (keycode) {
-    case RAISE:
-    case LOWER:
-      return false;
-    default:
-      return true;
-  }
 }
