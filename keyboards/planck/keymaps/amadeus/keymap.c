@@ -82,20 +82,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Adjust
  * ,-----------------------------------------------------------------------------------------------.
- * | F12   | F1    | F2    | F3    | F4    | F5    | F6    | F7    | F8    | F9    | F10   | F11   |
+ * |       | F1    | F2    | F3    | F4    | F5    | F6    | F7    | F8    | F9    | F10   | F11   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | Ctrl  | Mouse |       | Brt+  | Vol+  | Play  |       | CapsL | RGBMo | Hue+  | Spd+  | F12   |
+ * | Ctrl  | Mouse |       | Brt+  | Vol+  | Play  | CapsL | RGBMo | Hue+  | Spd+  | Sat+  | F12   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | Shift |       |       | Brt-  | Vol-  | Mute  |       | PrntS | Sat   | Hue-  | Spd-  | Shift |
+ * | Shift |       |       | Brt-  | Vol-  | Mute  | PrntS | RGBTo | Hue-  | Spd-  | Sat-  | Shift |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
  * | Esc   | Ctrl  | Alt   | OS    | ----- |     Space     | ----- | OS    | Alt   | Ctrl  | Reset |
  * `-----------------------------------------------------------------------------------------------'
  */
   [_ADJUST] = LAYOUT_planck_1x2uC(
-    KC_F12,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,  KC_F7,    KC_F8,     KC_F9,    KC_F10,   KC_F11,
-    KC_RCTL,  TO(4),    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_NO,  KC_CAPS,  RGB_MOD,   RGB_HUI,  RGB_SPI,  KC_F12,
-    KC_LSFT,  AU_TOG,   KC_NO,    KC_BRID,  KC_VOLD,  KC_MUTE,  KC_NO,  KC_PSCR,  RGB_SAI,   RGB_HUD,  RGB_SPD,  KC_RSFT,
-    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,           KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  RESET
+    KC_NO,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,   KC_F11,
+    KC_RCTL,  TO(4),    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_CAPS,  RGB_MOD,  RGB_HUI,   RGB_SPI,  RGB_SAI,  KC_F12,
+    KC_LSFT,  AU_TOG,   KC_NO,    KC_BRID,  KC_VOLD,  KC_MUTE,  KC_PSCR,  RGB_TOG,  RGB_HUD,   RGB_SPD,  RGB_SAD,  KC_RSFT,
+    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,             KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  RESET
   ),
 
 /* Mouse
