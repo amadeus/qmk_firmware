@@ -221,3 +221,27 @@ void matrix_scan_user(void) {
 #ifdef AUDIO_ENABLE
   #define STARTUP_SONG SONG(PLANCK_SOUND)
 #endif
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  switch (get_highest_layer(state)) {
+    case _LOWER:
+      rgblight_mode_noeeprom(1);
+      rgblight_enable_noeeprom();
+      rgblight_setrgb(RGB_RED);
+      break;
+    case _RAISE:
+      rgblight_mode_noeeprom(1);
+      rgblight_enable_noeeprom();
+      rgblight_setrgb(RGB_BLUE);
+      break;
+    case _ADJUST:
+      rgblight_mode_noeeprom(1);
+      rgblight_enable_noeeprom();
+      rgblight_setrgb(0xFF, 0x00, 0xFF);
+      break;
+    default:
+      rgblight_disable();
+      break;
+  }
+  return state;
+}
