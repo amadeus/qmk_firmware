@@ -233,31 +233,32 @@ void matrix_scan_user(void) {
 #    define STARTUP_SONG SONG(PLANCK_SOUND)
 #endif
 
+/* LED Indexes
+ * ,------------------------.
+ * | 3      4      5      6 |
+ * |                        |
+ * |           0            |
+ * |                        |
+ * | 2      1      8      7 |
+ * `------------------------'
+ */
+
+const rgblight_segment_t PROGMEM        rgb_lower_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_BLUE});
+const rgblight_segment_t PROGMEM        rgb_raise_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_ORANGE});
+const rgblight_segment_t PROGMEM        rgb_adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_MAGENTA});
+const rgblight_segment_t PROGMEM        rgb_mouse_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_RED});
+const rgblight_segment_t* const PROGMEM rgb_layers[]       = RGBLIGHT_LAYERS_LIST(rgb_lower_layer, rgb_raise_layer, rgb_adjust_layer, rgb_mouse_layer);
+
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-        case _LOWER:
-            rgblight_mode_noeeprom(1);
-            rgblight_enable_noeeprom();
-            rgblight_setrgb(RGB_RED);
-            break;
-        case _RAISE:
-            rgblight_mode_noeeprom(1);
-            rgblight_enable_noeeprom();
-            rgblight_setrgb(RGB_BLUE);
-            break;
-        case _ADJUST:
-            rgblight_mode_noeeprom(1);
-            rgblight_enable_noeeprom();
-            rgblight_setrgb(0xFF, 0x00, 0xFF);
-            break;
-        default:
-            rgblight_disable();
-            break;
-    }
+    // Both layers will light up if both kb layers are active
+    rgblight_set_layer_state(0, layer_state_cmp(state, 1));
+    rgblight_set_layer_state(1, layer_state_cmp(state, 2));
+    rgblight_set_layer_state(2, layer_state_cmp(state, 3));
+    rgblight_set_layer_state(3, layer_state_cmp(state, 4));
     return state;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (timer_elapsed(tt_timer) > tt_timeout) {
         press_count = 0;
     }
@@ -285,3 +286,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
+
+void keyboard_post_init_user(void) { rgblight_layers = rgb_layers; }
