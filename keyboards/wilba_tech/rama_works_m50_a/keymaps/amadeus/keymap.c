@@ -34,21 +34,21 @@ enum planck_layers {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Base
- * ,------------------------------------------------------------------------------------------------------.
- * |      | Tab   |   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   | Bksp  |
- * |------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      | Ctrl  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |   ;   |   "   |
- * |------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      | Shft  |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |   ,   |   .   |   /   | Shift |
- * |------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      | Esc   | Ctrl  | Alt   | OS    | Lower |     Space     | Raise | OS    | Alt   | Ctrl  | Enter |
+ * ,-_-----------------------------------------------------------------------------------------------------.
+ * | H1Inc | Tab   |   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   | Bksp  |
+ * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+ * | H1Dec | Ctrl  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |   ;   |   "   |
+ * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+ * | H2Inc | Shft  |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |   ,   |   .   |   /   | Shift |
+ * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+ * | H2Dec | Esc   | Ctrl  | Alt   | OS    | Lower |     Space     | Raise | OS    | Alt   | Ctrl  | Enter |
  * `------------------------------------------------------------------------------------------------------'
  */
   [_BASE] = LAYOUT(
-    _______,   KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,   KC_T,    KC_Y,  KC_U,    KC_I,     KC_O,     KC_P,     KC_BSPC,
-    _______,   KC_RCTL,  KC_A,     KC_S,     KC_D,     KC_F,   KC_G,    KC_H,  KC_J,    KC_K,     KC_L,     KC_SCLN,  KC_QUOT,
-    _______,   KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,   KC_B,    KC_N,  KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,
-    _______,   KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  TT_LL,  KC_SPC,         MO(2),   KC_RGUI,  KC_RALT,  KC_RCTL,  KC_ENT
+    H1_INC,    KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,   KC_T,    KC_Y,  KC_U,    KC_I,     KC_O,     KC_P,     KC_BSPC,
+    H1_DEC,    KC_RCTL,  KC_A,     KC_S,     KC_D,     KC_F,   KC_G,    KC_H,  KC_J,    KC_K,     KC_L,     KC_SCLN,  KC_QUOT,
+    H2_INC,    KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,   KC_B,    KC_N,  KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,
+    H2_DEC,    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  TT_LL,  KC_SPC,         MO(2),   KC_RGUI,  KC_RALT,  KC_RCTL,  KC_ENT
   ),
 
 
@@ -103,17 +103,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,------------------------------------------------------------------------------------------------------.
  * |      |       | F1    | F2    | F3    | F4    | F5    | F6    | F7    | F8    | F9    | F10   | F11   |
  * |--------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      | Ctrl  | Mouse |       | Brt+  | Vol+  | Play  | CapsL | RGBMo | Hue+  | Spd+  | Sat+  | F12   |
+ * |      | Ctrl  | Mouse |       | Brt+  | Vol+  | Play  | CapsL | EFInc | ESInc |       |       | F12   |
  * |--------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      | Shift |       |       | Brt-  | Vol-  | Mute  | PrntS | RGBTo | Hue-  | Spd-  | Sat-  | Shift |
+ * |      | Shift |       |       | Brt-  | Vol-  | Mute  | PrntS | EFDec | ESDec |       |       | Shift |
  * |--------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
  * |      | Esc   | Ctrl  | Alt   | OS    | ----- |     Space     | ----- | OS    | Alt   | Ctrl  | Reset |
  * `------------------------------------------------------------------------------------------------------'
  */
   [_ADJUST] = LAYOUT(
     _______, KC_NO,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,   KC_F11,
-    _______, KC_RCTL,  KC_NO,    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_CAPS,  BL_STEP,  RGB_HUI,   RGB_SPI,  RGB_SAI,  KC_F12,
-    _______, KC_LSFT,  AU_TOG,   KC_NO,    KC_BRID,  KC_VOLD,  KC_MUTE,  KC_PSCR,  BL_TOGG,  RGB_HUD,   RGB_SPD,  RGB_SAD,  KC_RSFT,
+    _______, KC_RCTL,  KC_NO,    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_CAPS,  EF_INC,   ES_INC,    KC_NO,    KC_NO,    KC_F12,
+    _______, KC_LSFT,  AU_TOG,   KC_NO,    KC_BRID,  KC_VOLD,  KC_MUTE,  KC_PSCR,  EF_DEC,   ES_DEC,    KC_NO,    KC_NO,    KC_RSFT,
     _______, KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,             KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  RESET
   )
 };
