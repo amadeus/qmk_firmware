@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// clang-format off
 #if defined(RGB_BACKLIGHT_ZEAL60) || \
     defined(RGB_BACKLIGHT_ZEAL65) || \
     defined(RGB_BACKLIGHT_M60_A) || \
@@ -52,6 +53,8 @@
 #include "wt_rgb_backlight.h"
 #include "wt_rgb_backlight_api.h"
 #include "wt_rgb_backlight_keycodes.h"
+// NOTE(amadeus): Uncomment this to enable debugging
+/* #include "print.h" */
 
 #if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined (RGB_BACKLIGHT_KW_MEGA)
 #include <avr/interrupt.h>
@@ -110,7 +113,9 @@ LED_TYPE g_ws2812_leds[WS2812_LED_TOTAL];
 #endif
 #endif
 
-#define BACKLIGHT_EFFECT_MAX 10
+// Disable built in RGB animation effects, we only
+// want RGB to light up as specified on the sidebar
+#define BACKLIGHT_EFFECT_MAX 0
 
 backlight_config g_config = {
     .use_split_backspace = RGB_BACKLIGHT_USE_SPLIT_BACKSPACE,
@@ -143,6 +148,20 @@ backlight_config g_config = {
 #endif
 };
 
+// NOTE(amadeus): I don't really know how C works, but for some reason above in
+// the definition for g_config, these values get changed later on by something
+// else, and I can't root cause it.  So a hack workaround at the moment is to
+// create a separate data set of values that I will use for managing layers and
+// such
+backlight_config f_config = {
+    .caps_lock_indicator = RGB_BACKLIGHT_CAPS_LOCK_INDICATOR,
+    .layer_1_indicator = RGB_BACKLIGHT_LAYER_1_INDICATOR,
+    .layer_2_indicator = RGB_BACKLIGHT_LAYER_2_INDICATOR,
+    .layer_3_indicator = RGB_BACKLIGHT_LAYER_3_INDICATOR,
+    .color_1 = RGB_BACKLIGHT_COLOR_1,
+};
+
+bool g_shift_held = false;
 bool g_suspend_state = false;
 uint8_t g_indicator_state = 0;
 
@@ -2425,40 +2444,57 @@ void backlight_effect_indicators_set_colors( uint8_t index, HS color )
 // colors already set
 void backlight_effect_indicators(void)
 {
-    if ( g_config.caps_lock_indicator.index != 255 &&
-            ( g_indicator_state & (1<<USB_LED_CAPS_LOCK) ) )
-    {
-        backlight_effect_indicators_set_colors( g_config.caps_lock_indicator.index, g_config.caps_lock_indicator.color );
-    }
-    // This if/else if structure allows higher layers to
-    // override lower ones. If we set layer 3's indicator
-    // to none, then it will NOT show layer 2 or layer 1
-    // indicators, even if those layers are on via the
-    // MO13/MO23 Fn combo magic.
-    //
-    // Basically we want to handle the case where layer 3 is
-    // still the backlight configuration layer and we don't
-    // want "all LEDs" indicators hiding the backlight effect,
-    // but still allow end users to do whatever they want.
-    if ( IS_LAYER_ON(3) )
-    {
-        if ( g_config.layer_3_indicator.index != 255 )
-        {
-            backlight_effect_indicators_set_colors( g_config.layer_3_indicator.index, g_config.layer_3_indicator.color );
+    if (IS_LAYER_ON(3)) {
+        // Highlight the hole bar if caps lock is ont
+        if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
+            backlight_effect_indicators_set_colors(0+15, f_config.layer_3_indicator.color);
+            backlight_effect_indicators_set_colors(0+16, f_config.layer_3_indicator.color);
+            backlight_effect_indicators_set_colors(36+15, f_config.layer_3_indicator.color);
+            backlight_effect_indicators_set_colors(36+7, f_config.layer_3_indicator.color);
+        } else {
+            backlight_effect_indicators_set_colors(f_config.layer_3_indicator.index, f_config.layer_3_indicator.color);
+            if (g_shift_held) {
+                backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.layer_3_indicator.color);
+            }
         }
-    }
-    else if ( IS_LAYER_ON(2) )
-    {
-        if ( g_config.layer_2_indicator.index != 255 )
-        {
-            backlight_effect_indicators_set_colors( g_config.layer_2_indicator.index, g_config.layer_2_indicator.color );
+    } else if (IS_LAYER_ON(2)) {
+        // Highlight the hole bar if caps lock is ont
+        if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
+            backlight_effect_indicators_set_colors(0+15, f_config.layer_2_indicator.color);
+            backlight_effect_indicators_set_colors(0+16, f_config.layer_2_indicator.color);
+            backlight_effect_indicators_set_colors(36+15, f_config.layer_2_indicator.color);
+            backlight_effect_indicators_set_colors(36+7, f_config.layer_2_indicator.color);
+        } else {
+            backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.layer_2_indicator.color);
+            if (g_shift_held) {
+                backlight_effect_indicators_set_colors(f_config.layer_3_indicator.index, f_config.layer_2_indicator.color);
+            }
         }
-    }
-    else if ( IS_LAYER_ON(1) )
-    {
-        if ( g_config.layer_1_indicator.index != 255 )
-        {
-            backlight_effect_indicators_set_colors( g_config.layer_1_indicator.index, g_config.layer_1_indicator.color );
+    } else if (IS_LAYER_ON(1)) {
+        // Highlight the hole bar if caps lock is ont
+        if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
+            backlight_effect_indicators_set_colors(0+15, f_config.layer_1_indicator.color);
+            backlight_effect_indicators_set_colors(0+16, f_config.layer_1_indicator.color);
+            backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
+            backlight_effect_indicators_set_colors(36+7, f_config.layer_1_indicator.color);
+        } else {
+            backlight_effect_indicators_set_colors(f_config.layer_1_indicator.index, f_config.layer_1_indicator.color);
+            if (g_shift_held) {
+                backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
+            }
+        }
+    } else {
+        // Highlight the hole bar if caps lock is ont
+        if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
+            backlight_effect_indicators_set_colors(0+15, f_config.color_1);
+            backlight_effect_indicators_set_colors(0+16, f_config.color_1);
+            backlight_effect_indicators_set_colors(36+15, f_config.color_1);
+            backlight_effect_indicators_set_colors(36+7, f_config.color_1);
+        } else {
+            backlight_effect_indicators_set_colors(36+15, f_config.color_1);
+            if (g_shift_held) {
+                backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.color_1);
+            }
         }
     }
 }
@@ -3197,6 +3233,14 @@ bool process_record_backlight(uint16_t keycode, keyrecord_t *record)
 
     switch(keycode)
     {
+        case KC_LSFT:
+        case KC_RSFT:
+            if ( record->event.pressed ) {
+                g_shift_held = true;
+            } else {
+                g_shift_held = false;
+            }
+            break;
         case BR_INC:
             if (record->event.pressed)
             {
