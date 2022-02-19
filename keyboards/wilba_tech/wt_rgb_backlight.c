@@ -1669,9 +1669,9 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
             backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
             backlight_effect_indicators_set_colors(36+7, f_config.layer_1_indicator.color);
         } else {
-            backlight_effect_indicators_set_colors(f_config.layer_1_indicator.index, f_config.layer_1_indicator.color);
+            backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
             if (g_shift_held) {
-                backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
+                backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.layer_1_indicator.color);
             }
         }
     } else {
@@ -1682,9 +1682,9 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
             backlight_effect_indicators_set_colors(36+15, f_config.color_1);
             backlight_effect_indicators_set_colors(36+7, f_config.color_1);
         } else {
-            backlight_effect_indicators_set_colors(36+15, f_config.color_1);
+            backlight_effect_indicators_set_colors(f_config.layer_1_indicator.index, f_config.color_1);
             if (g_shift_held) {
-                backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.color_1);
+                backlight_effect_indicators_set_colors(36+15, f_config.color_1);
             }
         }
     }
