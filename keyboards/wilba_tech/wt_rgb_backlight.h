@@ -69,6 +69,15 @@ typedef struct
 #endif
 } backlight_config;                // = 31 bytes (M6-B = 43 bytes, M10-C 51 bytes)
 
+typedef struct
+{
+	backlight_config_indicator caps_lock_indicator;	// 3 bytes
+	backlight_config_indicator layer_0_indicator;	// 3 bytes
+	backlight_config_indicator layer_1_indicator;	// 3 bytes
+	backlight_config_indicator layer_2_indicator;	// 3 bytes
+	backlight_config_indicator layer_3_indicator;	// 3 bytes
+} amadeus_backlight_config;
+
 void backlight_config_load(void);
 void backlight_config_save(void);
 void backlight_config_set_value( uint8_t *data );

@@ -153,12 +153,12 @@ backlight_config g_config = {
 // else, and I can't root cause it.  So a hack workaround at the moment is to
 // create a separate data set of values that I will use for managing layers and
 // such
-backlight_config f_config = {
+amadeus_backlight_config amadeus_config = {
     .caps_lock_indicator = RGB_BACKLIGHT_CAPS_LOCK_INDICATOR,
+    .layer_0_indicator = RGB_BACKLIGHT_LAYER_0_INDICATOR,
     .layer_1_indicator = RGB_BACKLIGHT_LAYER_1_INDICATOR,
     .layer_2_indicator = RGB_BACKLIGHT_LAYER_2_INDICATOR,
     .layer_3_indicator = RGB_BACKLIGHT_LAYER_3_INDICATOR,
-    .color_1 = RGB_BACKLIGHT_COLOR_1,
 };
 
 bool g_shift_held = false;
@@ -2445,56 +2445,44 @@ void backlight_effect_indicators_set_colors( uint8_t index, HS color )
 void backlight_effect_indicators(void)
 {
     if (IS_LAYER_ON(3)) {
+        backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_3_indicator.color);
         // Highlight the hole bar if caps lock is ont
         if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
-            backlight_effect_indicators_set_colors(0+15, f_config.layer_3_indicator.color);
-            backlight_effect_indicators_set_colors(0+16, f_config.layer_3_indicator.color);
-            backlight_effect_indicators_set_colors(36+15, f_config.layer_3_indicator.color);
-            backlight_effect_indicators_set_colors(36+7, f_config.layer_3_indicator.color);
-        } else {
-            backlight_effect_indicators_set_colors(f_config.layer_3_indicator.index, f_config.layer_3_indicator.color);
-            if (g_shift_held) {
-                backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.layer_3_indicator.color);
-            }
+            backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_3_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_3_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_3_indicator.color);
+        } else if (g_shift_held) {
+            backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_3_indicator.color);
         }
     } else if (IS_LAYER_ON(2)) {
+        backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_2_indicator.color);
         // Highlight the hole bar if caps lock is ont
         if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
-            backlight_effect_indicators_set_colors(0+15, f_config.layer_2_indicator.color);
-            backlight_effect_indicators_set_colors(0+16, f_config.layer_2_indicator.color);
-            backlight_effect_indicators_set_colors(36+15, f_config.layer_2_indicator.color);
-            backlight_effect_indicators_set_colors(36+7, f_config.layer_2_indicator.color);
-        } else {
-            backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.layer_2_indicator.color);
-            if (g_shift_held) {
-                backlight_effect_indicators_set_colors(f_config.layer_3_indicator.index, f_config.layer_2_indicator.color);
-            }
+            backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_2_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_2_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_2_indicator.color);
+        } else if (g_shift_held) {
+            backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_2_indicator.color);
         }
     } else if (IS_LAYER_ON(1)) {
-        // Highlight the hole bar if caps lock is ont
+        backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_1_indicator.color);
+        // Highlight the hole bar if caps lock is on
         if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
-            backlight_effect_indicators_set_colors(0+15, f_config.layer_1_indicator.color);
-            backlight_effect_indicators_set_colors(0+16, f_config.layer_1_indicator.color);
-            backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
-            backlight_effect_indicators_set_colors(36+7, f_config.layer_1_indicator.color);
-        } else {
-            backlight_effect_indicators_set_colors(36+15, f_config.layer_1_indicator.color);
-            if (g_shift_held) {
-                backlight_effect_indicators_set_colors(f_config.layer_2_indicator.index, f_config.layer_1_indicator.color);
-            }
+            backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_1_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_1_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_1_indicator.color);
+        } else if (g_shift_held) {
+            backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_1_indicator.color);
         }
     } else {
-        // Highlight the hole bar if caps lock is ont
+        backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_0_indicator.color);
+        // Highlight the hole bar if caps lock is on
         if ((g_indicator_state & (1<<USB_LED_CAPS_LOCK))) {
-            backlight_effect_indicators_set_colors(0+15, f_config.color_1);
-            backlight_effect_indicators_set_colors(0+16, f_config.color_1);
-            backlight_effect_indicators_set_colors(36+15, f_config.color_1);
-            backlight_effect_indicators_set_colors(36+7, f_config.color_1);
-        } else {
-            backlight_effect_indicators_set_colors(f_config.layer_1_indicator.index, f_config.color_1);
-            if (g_shift_held) {
-                backlight_effect_indicators_set_colors(36+15, f_config.color_1);
-            }
+            backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_0_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_0_indicator.color);
+            backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_0_indicator.color);
+        } else if (g_shift_held) {
+            backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_0_indicator.color);
         }
     }
 }
