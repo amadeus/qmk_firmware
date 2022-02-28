@@ -81,7 +81,7 @@
 #define RGB_BACKLIGHT_BRIGHTNESS 255
 
 // the default effect (RGB test)
-#define RGB_BACKLIGHT_EFFECT 255
+#define RGB_BACKLIGHT_EFFECT 0
 
 // the default effect speed (0-3)
 #define RGB_BACKLIGHT_EFFECT_SPEED 0
