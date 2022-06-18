@@ -161,7 +161,8 @@ amadeus_backlight_config amadeus_config = {
     .layer_3_indicator = RGB_BACKLIGHT_LAYER_3_INDICATOR,
 };
 
-bool g_shift_held = false;
+bool g_lshift_held = false;
+bool g_rshift_held = false;
 bool g_suspend_state = false;
 uint8_t g_indicator_state = 0;
 
@@ -2451,7 +2452,7 @@ void backlight_effect_indicators(void)
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_3_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_3_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_3_indicator.color);
-        } else if (g_shift_held) {
+        } else if (g_lshift_held || g_rshift_held) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_3_indicator.color);
         }
     } else if (IS_LAYER_ON(2)) {
@@ -2461,7 +2462,7 @@ void backlight_effect_indicators(void)
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_2_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_2_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_2_indicator.color);
-        } else if (g_shift_held) {
+        } else if (g_lshift_held || g_rshift_held) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_2_indicator.color);
         }
     } else if (IS_LAYER_ON(1)) {
@@ -2471,7 +2472,7 @@ void backlight_effect_indicators(void)
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_1_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_1_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_1_indicator.color);
-        } else if (g_shift_held) {
+        } else if (g_lshift_held || g_rshift_held) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_1_indicator.color);
         }
     } else {
@@ -2481,7 +2482,7 @@ void backlight_effect_indicators(void)
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_0_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_0_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_0_indicator.color);
-        } else if (g_shift_held) {
+        } else if (g_lshift_held || g_rshift_held) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_0_indicator.color);
         }
     }
@@ -3222,11 +3223,17 @@ bool process_record_backlight(uint16_t keycode, keyrecord_t *record)
     switch(keycode)
     {
         case KC_LSFT:
+            if ( record->event.pressed ) {
+                g_lshift_held = true;
+            } else {
+                g_lshift_held = false;
+            }
+            break;
         case KC_RSFT:
             if ( record->event.pressed ) {
-                g_shift_held = true;
+                g_rshift_held = true;
             } else {
-                g_shift_held = false;
+                g_rshift_held = false;
             }
             break;
         case BR_INC:
