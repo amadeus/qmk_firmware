@@ -15,15 +15,6 @@
  */
 #include QMK_KEYBOARD_H
 
-uint16_t tt_timeout      = 300;
-uint16_t tt_lock_pressed = 3;
-uint16_t press_count     = 0;
-uint16_t tt_timer        = 0;
-
-enum custom_keycodes {
-    TT_LL = SAFE_RANGE,
-};
-
 // clang-format off
 enum planck_layers {
   _BASE,
@@ -35,41 +26,30 @@ enum planck_layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Base
  * ,-_-----------------------------------------------------------------------------------------------------.
- * | H1Inc | Tab   |   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   | Bksp  |
+ * | Adjust| Tab   |   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   | Bksp  |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | H1Dec | Ctrl  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |   ;   |   "   |
+ * | Raise | Ctrl  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |   ;   |   "   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | H2Inc | Shft  |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |   ,   |   .   |   /   | Shift |
+ * | Lower | Shft  |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |   ,   |   .   |   /   | Shift |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | H2Dec | Esc   | Ctrl  | Alt   | OS    | Lower |     Space     | Raise | OS    | Alt   | Ctrl  | Enter |
+ * | Base  | Esc   | Ctrl  | Alt   | OS    | Lower |     Space     | Raise | OS    | Alt   | Ctrl  | Enter |
  * `------------------------------------------------------------------------------------------------------'
  */
   [_BASE] = LAYOUT(
     TO(3),  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,   KC_T,    KC_Y,  KC_U,    KC_I,     KC_O,     KC_P,     KC_BSPC,
     TO(2),  KC_RCTL,  KC_A,     KC_S,     KC_D,     KC_F,   KC_G,    KC_H,  KC_J,    KC_K,     KC_L,     KC_SCLN,  KC_QUOT,
     TO(1),  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,   KC_B,    KC_N,  KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,
-    TO(0),  KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  TT_LL,  KC_SPC,         MO(2),   KC_RGUI,  KC_RALT,  KC_RCTL,  KC_ENT
+    TO(0),  KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  MO(1),  KC_SPC,         MO(2),   KC_RGUI,  KC_RALT,  KC_RCTL,  KC_ENT
   ),
 
 
-/* Lower
- * ,------------------------------------------------------------------------------------------.
- * |      |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
- * |------+------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   _  |   +  |   {  |   }  |  |   |
- * |------+------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | | Home | End  |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
- * `------------------------------------------------------------------------------------------'
- */
 /* Lower
  * ,------------------------------------------------------------------------------------------------------.
  * |      |   ~   |   !   |   @   |   #   |   $   |   %   |   ^   |   &   |   *   |   (   |   )   |   |   |
  * |------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
  * |      |   `   |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   0   |   \   |
  * |------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      |   .   |   <   |   >   |   =   |   -   |   _   |   +   |   {   |   }   |   [   |   ]   |   ,   |
+ * |      |   ,   |   <   |   >   |   =   |   -   |   _   |   +   |   {   |   }   |   [   |   ]   |   .   |
  * |------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
  * |      | Esc   | Ctrl  | Alt   | OS    | ----- |     Space     | Adjst | OS    | Alt   | Ctrl  | Enter |
  * `------------------------------------------------------------------------------------------------------'
@@ -103,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,------------------------------------------------------------------------------------------------------.
  * |      |       | F1    | F2    | F3    | F4    | F5    | F6    | F7    | F8    | F9    | F10   | F11   |
  * |--------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |      | Ctrl  | Mouse |       | Brt+  | Vol+  | Play  |       | CapsL |       |       |       | F12   |
+ * |      | Ctrl  |       |       | Brt+  | Vol+  | Play  |       | CapsL |       |       |       | F12   |
  * |--------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
  * |      | Shift |       |       | Brt-  | Vol-  | Mute  |       | PrntS |       |       |       | Shift |
  * |--------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
@@ -118,35 +98,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 // clang-format on
-
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-    if (timer_elapsed(tt_timer) > tt_timeout) {
-        press_count = 0;
-    }
-    switch (keycode) {
-        // This is my custom version of the TT function, that doesn't introduce lag
-        // in the layer response
-        case TT_LL: {
-            if (record->event.pressed) {
-                if (layer_state_is(_LOWER)) {
-                    layer_off(_LOWER);
-                    press_count = 0;
-                    tt_timer    = 0;
-                } else {
-                    press_count += 1;
-                    layer_on(_LOWER);
-                    tt_timer = timer_read();
-                }
-            } else {
-                if (press_count < tt_lock_pressed) {
-                    layer_off(_LOWER);
-                }
-            }
-            break;
-        }
-    }
-    return true;
-}
 
 // NOTE(amadeus): Enable this when debugging
 // void keyboard_post_init_user(void) { debug_enable = true; }
