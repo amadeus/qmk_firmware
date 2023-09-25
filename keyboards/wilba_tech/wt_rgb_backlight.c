@@ -169,6 +169,11 @@ uint8_t g_key_hit[BACKLIGHT_LED_COUNT];
 // Ticks since any key was last hit.
 uint32_t g_any_key_hit = 0;
 
+bool g_caps_word_enabled = false;
+void caps_word_set_user(bool active) {
+    g_caps_word_enabled = active;
+}
+
 typedef struct Point {
     uint8_t x;
     uint8_t y;
@@ -1639,7 +1644,7 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
     if (IS_LAYER_ON(3)) {
         backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_3_indicator.color);
         // Highlight the hole bar if caps lock is ont
-        if (host_keyboard_led_state().caps_lock) {
+        if (host_keyboard_led_state().caps_lock || g_caps_word_enabled) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_3_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_3_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_3_indicator.color);
@@ -1649,7 +1654,7 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
     } else if (IS_LAYER_ON(2)) {
         backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_2_indicator.color);
         // Highlight the hole bar if caps lock is ont
-        if (host_keyboard_led_state().caps_lock) {
+        if (host_keyboard_led_state().caps_lock || g_caps_word_enabled) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_2_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_2_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_2_indicator.color);
@@ -1659,7 +1664,7 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
     } else if (IS_LAYER_ON(1)) {
         backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_1_indicator.color);
         // Highlight the hole bar if caps lock is on
-        if (host_keyboard_led_state().caps_lock) {
+        if (host_keyboard_led_state().caps_lock || g_caps_word_enabled) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_1_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_1_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_1_indicator.color);
@@ -1669,7 +1674,7 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
     } else {
         backlight_effect_indicators_set_colors(amadeus_config.layer_0_indicator.index, amadeus_config.layer_0_indicator.color);
         // Highlight the hole bar if caps lock is on
-        if (host_keyboard_led_state().caps_lock) {
+        if (host_keyboard_led_state().caps_lock || g_caps_word_enabled) {
             backlight_effect_indicators_set_colors(amadeus_config.layer_3_indicator.index, amadeus_config.layer_0_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_2_indicator.index, amadeus_config.layer_0_indicator.color);
             backlight_effect_indicators_set_colors(amadeus_config.layer_1_indicator.index, amadeus_config.layer_0_indicator.color);
