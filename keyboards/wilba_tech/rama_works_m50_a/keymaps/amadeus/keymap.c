@@ -101,3 +101,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // NOTE(amadeus): Enable this when debugging
 // void keyboard_post_init_user(void) { debug_enable = true; }
+
+// Custom Caps Word implementation -- basically only shift letters, not
+// symbols, given my layout
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Capitalize all letter keys
+        case KC_A ... KC_Z:
+            add_weak_mods(MOD_BIT(KC_LSFT));
+            return true;
+        // Keycodes that still continue Caps Word
+        case KC_MINS:
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+            return true;
+        // Otherwise, stop Caps Word
+        default:
+            return false;
+    }
+}

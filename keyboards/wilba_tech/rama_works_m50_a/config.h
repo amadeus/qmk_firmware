@@ -73,3 +73,6 @@
 // Backlight config starts after VIA's EEPROM usage,
 // dynamic keymaps start after this.
 #define VIA_EEPROM_CUSTOM_CONFIG_SIZE 31
+
+// Allow Caps Word feature to be enabled when both shifts are held down
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
