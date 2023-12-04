@@ -71,21 +71,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
 /* Raise
- * ,-----------------------------------------------------------------------------------------------.
- * | Tab   |       |       |       |       |       |       |       |       |       |       | Del   |
- * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | Ctrl  |       | Home  | PgUp  | PgDn  | End   | Left  | Down  | Up    | Right |       |       |
- * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | Shift |       |       |       |       |       |       |       |       |       |       | Shift |
- * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | Esc   | Ctrl  | Alt   | OS    | Adjst |     Space     | ----- | OS    | Alt   | Ctrl  | Enter |
- * `-----------------------------------------------------------------------------------------------'
+ * ,------------------------------------------------------------------------------------------------.
+ * | Tab   |       |       |       |        |       |       |       |       |       |       | Del   |
+ * |-------+-------+-------+-------+--------+-------+-------+-------+-------+-------+-------+-------|
+ * | Ctrl  | Menu  | Home  | PgUp  | PgDn   | End   | Left  | Down  | Up    | Right |       |       |
+ * |-------+-------+-------+-------+--------+-------+-------+-------+-------+-------+-------+-------|
+ * | Shift |       | Pause | ScrLck| Insert |       |       |       |       |       |       | Shift |
+ * |-------+-------+-------+-------+--------+-------+-------+-------+-------+-------+-------+-------|
+ * | Esc   | Ctrl  | Alt   | OS    | Adjst  |     Space     | ----- | OS    | Alt   | Ctrl  | Enter |
+ * `------------------------------------------------------------------------------------------------'
  */
   [_RAISE] = LAYOUT_planck_1x2uC(
-    KC_TAB,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_DEL,
-    KC_RCTL,  KC_NO,    KC_HOME,  KC_PGUP,  KC_PGDN,  KC_END,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  KC_NO,    KC_NO,
-    KC_LSFT,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_RSFT,
-    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  MO(3),    KC_SPC,            KC_TRNS,  KC_RGUI,  KC_RALT,  KC_RCTL,  KC_ENT
+    KC_TAB,   KC_NO,    KC_NO,     KC_NO,    KC_NO,    KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_DEL,
+    KC_RCTL,  KC_MENU,  KC_HOME,   KC_PGUP,  KC_PGDN,  KC_END,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  KC_NO,    KC_NO,
+    KC_LSFT,  KC_NO,    KC_PAUSE,  KC_SCRL,  KC_INS,   KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_RSFT,
+    KC_ESC,   KC_LCTL,  KC_LALT,   KC_LGUI,  MO(3),    KC_SPC,            KC_TRNS,  KC_RGUI,  KC_RALT,  KC_RCTL,  KC_ENT
   ),
 
 /* Adjust
