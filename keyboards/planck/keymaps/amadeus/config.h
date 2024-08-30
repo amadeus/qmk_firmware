@@ -21,3 +21,5 @@
 
 // Allow Caps Word feature to be enabled when both shifts are held down
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+
+#define TAPPING_TERM 500

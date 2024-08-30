@@ -16,6 +16,18 @@
 
 #include QMK_KEYBOARD_H
 
+enum {
+    TD_FLASH,
+};
+
+void alt_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 3) {
+        reset_keyboard();
+    }
+};
+
+tap_dance_action_t tap_dance_actions[] = {[TD_FLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alt_finished, NULL)};
+
 uint16_t tt_timeout      = 300;
 uint16_t tt_lock_pressed = 3;
 uint16_t press_count     = 0;
@@ -103,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,   KC_F11,
     KC_RCTL,  KC_NO,    KC_NO,    KC_BRIU,  KC_VOLU,  KC_MPLY,  KC_NO,    KC_CAPS,  RGB_MOD,   RGB_HUI,  RGB_SPI,  KC_F12,
     KC_LSFT,  AU_TOGG,  KC_NO,    KC_BRID,  KC_VOLD,  KC_MUTE,  KC_NO,    KC_PSCR,  RGB_TOG,   RGB_HUD,  RGB_SPD,  KC_RSFT,
-    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,             KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  QK_BOOTLOADER
+    KC_ESC,   KC_LCTL,  KC_LALT,  KC_LGUI,  KC_TRNS,  KC_SPC,             KC_TRNS,  KC_RGUI,   KC_RALT,  KC_RCTL,  TD(TD_FLASH)
   )
 };
 // clang-format on
@@ -122,7 +134,7 @@ const rgblight_segment_t PROGMEM        rgb_lower_layer[]  = RGBLIGHT_LAYER_SEGM
 const rgblight_segment_t PROGMEM        rgb_raise_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_ORANGE});
 const rgblight_segment_t PROGMEM        rgb_adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_MAGENTA});
 const rgblight_segment_t PROGMEM        rgb_mouse_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 9, HSV_RED});
-const rgblight_segment_t* const PROGMEM rgb_layers[]       = RGBLIGHT_LAYERS_LIST(rgb_lower_layer, rgb_raise_layer, rgb_adjust_layer, rgb_mouse_layer);
+const rgblight_segment_t *const PROGMEM rgb_layers[]       = RGBLIGHT_LAYERS_LIST(rgb_lower_layer, rgb_raise_layer, rgb_adjust_layer, rgb_mouse_layer);
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Both layers will light up if both kb layers are active
@@ -133,7 +145,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (timer_elapsed(tt_timer) > tt_timeout) {
         press_count = 0;
     }
