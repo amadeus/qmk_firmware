@@ -18,3 +18,6 @@
 #define RGBLIGHT_LAYERS
 #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
 #define RGBLIGHT_USE_TIMER
+
+// Allow Caps Word feature to be enabled when both shifts are held down
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
