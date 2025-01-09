@@ -1,0 +1,2 @@
+#define DEBOUNCE_TYPE EAGER_PK
+#define DEBOUNCE 5
